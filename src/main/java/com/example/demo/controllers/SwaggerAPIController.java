@@ -1,22 +1,40 @@
 package com.example.demo.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.ui.Model;
+
+import javax.servlet.http.HttpServletRequest;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
+@RequestMapping("/add")
 public class SwaggerAPIController {
 
-
-    @GetMapping("/greeting")
-    public String greeting(
-            @RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "greeting";
+    @RequestMapping( value = "/file-link", method = GET)
+    public String fileLink(){
+        return "get";
     }
-    @GetMapping("/Hello")
-    public String homePage(){
-        return "Hello...";
+    @RequestMapping(value = "/list-file", method = GET)
+    public String listFile(){
+        return "file";
     }
-
+    @RequestMapping(value = "/post", method = POST)
+    @ResponseBody
+    public String postFos() {
+        return "Post";
+    }
+    @RequestMapping(value = "/delete", method = DELETE)
+    public String deleteFos(){
+        return "Delete";
+    }
+    @RequestMapping(value = "/put", method = PUT)
+    public String putFos(){
+        return "put";
+    }
 
 }
