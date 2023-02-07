@@ -9,7 +9,7 @@ public class SwaggerAPIController {
 
     @RequestMapping( value = "/file-link", method = GET)
     public String fileLink(){
-        return "get";
+        return "Get";
     }
     @RequestMapping(value = "/list-file", method = GET)
     public String listFile(){
@@ -18,7 +18,7 @@ public class SwaggerAPIController {
     @RequestMapping(value = "/post", method = POST)
     @ResponseBody
     public String postFos() {
-        return "Здаровоа ебать!)";
+        return "Post";
     }
     @RequestMapping(value = "/delete", method = DELETE)
     public String deleteFos(){
@@ -26,7 +26,7 @@ public class SwaggerAPIController {
     }
     @RequestMapping(value = "/put", method = PUT)
     public String putFos(){
-        return "put";
+        return "Put";
     }
 
 }
