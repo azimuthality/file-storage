@@ -1,42 +1,43 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entity.File;
-import com.example.demo.repository.FileService;
-import com.example.demo.service.DataBaseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.apache.commons.io.IOUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import javax.ws.rs.core.Request;
-import java.util.List;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-@RequestMapping(value = "/profiles")
+@RequestMapping("/")
 public class SwaggerAPIController {
-
-    @Autowired
-    private DataBaseService dataBaseService;
-    private final FileService fileService;
-
-
-    public SwaggerAPIController(FileService fileService) {
-        this.fileService = fileService;
+    @GetMapping( value = "/file",
+        produces = MediaType.APPLICATION_PDF_VALUE
+    )
+    public @ResponseBody byte[] getImage() throws IOException {
+        InputStream in = getClass()
+                .getResourceAsStream("/files/test.pdf/");
+        return IOUtils.toByteArray(in);
     }
 
-    @GetMapping(value = "/all")
-    public List<File> getAll() {
-        return fileService.getAll();
+    @RequestMapping(value = "/list", method = GET)
+    public String listFile(){
+        return "list-file";
+    }
+    @RequestMapping(value = "/post", method = POST)
+    @ResponseBody
+    public String postFos() {
+        return "Post";
     }
 
-    @GetMapping(value = "/{id:\\d+}")
-    public File getFileById(@PathVariable long id) {
-        return fileService.getFileById(id);
+    @RequestMapping(value = "/delete", method = DELETE)
+    public String deleteFos(){
+        return "Delete";
     }
-
-    @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public File insert(@Valid @RequestBody File file) {
-        return dataBaseService.insertFile(file);
+    @RequestMapping(value = "/put", method = PUT)
+    public String putFos(){
+        return "Put";
     }
 
 }

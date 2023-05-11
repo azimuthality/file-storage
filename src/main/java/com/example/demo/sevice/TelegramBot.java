@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.sevice;
 
 import com.example.demo.config.BotConfig;
 import org.springframework.stereotype.Component;

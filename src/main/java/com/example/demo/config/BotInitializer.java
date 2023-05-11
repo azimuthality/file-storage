@@ -1,7 +1,8 @@
 package com.example.demo.config;
 
-import com.example.demo.service.TelegramBot;
+import com.example.demo.sevice.TelegramBot;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
