@@ -1,36 +1,39 @@
 package com.example.demo.service;
 
+
 import com.example.demo.entity.File;
 import com.example.demo.repository.FileRepository;
-import com.example.demo.repository.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.util.stream.Stream;
 
 
-@Primary
 @Service
-public class DataBaseService implements FileService {
+public class DataBaseService  {
 
     @Autowired
-    private final FileRepository fileRepository;
-    public DataBaseService(FileRepository fileRepository) {
-        this.fileRepository = fileRepository;
-    }
-    @Override
-    public File getFileById(long id) {
-        return fileRepository.getFileById(id);
+    private  FileRepository fileRepository;
+
+
+    public File store(MultipartFile file) throws IOException {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        File file1 = new File(fileName, file.getContentType(), file.getBytes());
+
+        return fileRepository.save(file1);
     }
 
-    public File insertFile(File file)
-    {
-        return fileRepository.save(file);
+    public File getFile(String id) {
+        return fileRepository.findById(id).get();
     }
 
-    @Override
-    public List<File> getAll(){
-        return fileRepository.findAll();
+    public Stream<File> getAllFile() {
+        return fileRepository.findAll().stream();
     }
+
+
 
 }

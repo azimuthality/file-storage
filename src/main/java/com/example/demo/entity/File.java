@@ -1,55 +1,55 @@
 package com.example.demo.entity;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.SQLInsert;
-import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "file_list")
+@Table(name = "files")
 public class File {
     @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name= "increment", strategy= "increment")
-    @Column(name = "id", length = 6, nullable = false)
-    private long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
+    private String name;
+    private String type;
+    @Lob
+    private byte[] data;
 
-    @Column(name = "file")
-    private String file;
-
-    @Column(name = "uuid_identifier")
-    private String uuid_identifier;
-
-    public File(){
+    public File() {
     }
 
-    public File(String file, String uuid_identifier) {
-        this.file = file;
-        this.uuid_identifier = uuid_identifier;
+    public File(String name, String type, byte[] data) {
+        this.name = name;
+        this.type = type;
+        this.data = data;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
-    public String getFile() {
-        return file;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public String getType() {
+        return type;
     }
 
-    public String getUuid_identifier() {
-        return uuid_identifier;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setUuid_identifier(String uuid_identifier) {
-        this.uuid_identifier = uuid_identifier;
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
 }
