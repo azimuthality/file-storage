@@ -1,47 +1,37 @@
 package com.example.demo.message;
 
 public class ResponseFile {
-    private String name;
-    private String url;
-    private String type;
-    private long size;
+    String fileName;
+    String fileType;
+    String fileUri;
 
-    public ResponseFile(String name, String url, String type, long size) {
-        this.name = name;
-        this.url = url;
-        this.type = type;
-        this.size = size;
+    public ResponseFile(String fileName, String fileType, String fileUri) {
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.fileUri = fileUri;
     }
 
-    public String getName() {
-        return name;
+    public String getFileUri() {
+        return fileUri;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFileUri(String fileUri) {
+        this.fileUri = fileUri;
     }
 
-    public String getUrl() {
-        return url;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public String getType() {
-        return type;
+    public String getFileType() {
+        return fileType;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

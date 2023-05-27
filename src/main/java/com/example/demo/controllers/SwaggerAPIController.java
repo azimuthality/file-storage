@@ -1,42 +1,77 @@
 package com.example.demo.controllers;
 
+import java.io.IOException;
+import java.util.Arrays;
 import com.example.demo.entity.File;
 import com.example.demo.message.ResponseFile;
-import com.example.demo.message.ResponseMessage;
 import com.example.demo.service.DataBaseService;
+import io.github.classgraph.Resource;
+import io.swagger.models.Model;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.http.HttpHeaders;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin("http://localhost:8080")
+@RequestMapping("/File")
 public class SwaggerAPIController {
-
     @Autowired
     private DataBaseService dataBaseService;
 
+    @PostMapping("/Upload")
+    public ResponseFile uploadFile(@RequestParam("file") MultipartFile file) {
 
-    @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
-        String message = "";
-        try {
-            dataBaseService.store(file);
+        File model = dataBaseService.saveFile(file);
 
-            message = "Uploaded the file successfully: " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-        } catch (Exception e) {
-            message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").
+                path(model.getId()).toUriString();
+        return new ResponseFile(model.getName(), model.getType(), fileUri);
     }
 
-    @GetMapping("/files")
+    @PostMapping("/UploadMultipleFiles")
+    public List<ResponseFile> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+        return Arrays.asList(files).
+                stream().
+                map(file -> uploadFile(file)).
+                collect(Collectors.toList());
+    }
+
+    /*@GetMapping("/download/{fileName}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
+        File model = dataBaseService.getFile(fileName);
+        return ResponseEntity.ok().
+                header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + model.getFileName() + "\"").
+                body(new ByteArrayResource(model.getFileData()));
+
+
+    }*/
+
+
+    @GetMapping("/Allfiles")
+    public  List<File>  getListFiles(Model model) {
+        List<File> fileDetails = dataBaseService.getListOfFiles();
+
+        return fileDetails;
+    }
+
+
+
+
+
+
+
+
+
+    /*@GetMapping("/files")
     public ResponseEntity<List<ResponseFile>> getListFiles() {
         List<ResponseFile> files = dataBaseService.getAllFile().map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
@@ -62,7 +97,7 @@ public class SwaggerAPIController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
                 .body(file.getData());
-    }
+    }*/
 
 
 
