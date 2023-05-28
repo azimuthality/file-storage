@@ -1,19 +1,12 @@
 package com.example.demo.controllers;
 
-import java.io.IOException;
 import java.util.Arrays;
-import com.example.demo.entity.File;
+import com.example.demo.entity.Simple;
 import com.example.demo.message.ResponseFile;
 import com.example.demo.service.DataBaseService;
-import io.github.classgraph.Resource;
 import io.swagger.models.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -30,7 +23,7 @@ public class SwaggerAPIController {
     @PostMapping("/Upload")
     public ResponseFile uploadFile(@RequestParam("file") MultipartFile file) {
 
-        File model = dataBaseService.saveFile(file);
+        Simple model = dataBaseService.saveFile(file);
 
         String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").
                 path(model.getId()).toUriString();
@@ -57,8 +50,8 @@ public class SwaggerAPIController {
 
 
     @GetMapping("/Allfiles")
-    public  List<File>  getListFiles(Model model) {
-        List<File> fileDetails = dataBaseService.getListOfFiles();
+    public  List<Simple>  getListFiles(Model model) {
+        List<Simple> fileDetails = dataBaseService.getListOfFiles();
 
         return fileDetails;
     }

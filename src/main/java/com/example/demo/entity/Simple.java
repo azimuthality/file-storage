@@ -1,17 +1,13 @@
 package com.example.demo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "file")
+@Table(name= "simple")
 
-public class File {
+public class Simple {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -25,18 +21,18 @@ public class File {
     @Lob
     private byte[] data;
 
-    public File() {
+    public Simple() {
 
     }
 
-    public File(String name, String type) {
+    public Simple(String name, String type) {
 
         this.name = name;
         this.type = type;
 
     }
 
-    public File(String name, String type, byte[] data) {
+    public Simple(String name, String type, byte[] data) {
 
         this.name = name;
         this.type = type;
