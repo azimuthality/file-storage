@@ -1,18 +1,24 @@
 package com.example.demo.controllers;
 
+
 import java.util.Arrays;
 import com.example.demo.entity.Simple;
 import com.example.demo.message.ResponseFile;
 import com.example.demo.service.DataBaseService;
 import io.swagger.models.Model;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.core.io.Resource;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/File")
@@ -38,16 +44,24 @@ public class SwaggerAPIController {
                 collect(Collectors.toList());
     }
 
-    /*@GetMapping("/download/{fileName}")
+    @GetMapping("/download/{fileName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
-        File model = dataBaseService.getFile(fileName);
+        Simple model = dataBaseService.getFile(fileName);
         return ResponseEntity.ok().
-                header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + model.getFileName() + "\"").
-                body(new ByteArrayResource(model.getFileData()));
+                header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + model.getName() + "\"").
+                body(new ByteArrayResource(model.getData()));
 
 
-    }*/
+    }
 
+    @GetMapping("/files/{id}")
+    public ResponseEntity<byte[]> getFile(@PathVariable String id) {
+        Simple simple = dataBaseService.getFile(id);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + simple.getName() + "\"")
+                .body(simple.getData());
+    }
 
     @GetMapping("/Allfiles")
     public  List<Simple>  getListFiles(Model model) {
@@ -57,41 +71,6 @@ public class SwaggerAPIController {
     }
 
 
-
-
-
-
-
-
-
-    /*@GetMapping("/files")
-    public ResponseEntity<List<ResponseFile>> getListFiles() {
-        List<ResponseFile> files = dataBaseService.getAllFile().map(dbFile -> {
-            String fileDownloadUri = ServletUriComponentsBuilder
-                    .fromCurrentContextPath()
-                    .path("/files/")
-                    .path(dbFile.getId())
-                    .toUriString();
-
-            return new ResponseFile(
-                    dbFile.getName(),
-                    fileDownloadUri,
-                    dbFile.getType(),
-                    dbFile.getData().length);
-        }).collect(Collectors.toList());
-
-        return ResponseEntity.status(HttpStatus.OK).body(files);
-    }
-
-    @GetMapping("/files/{id}")
-    public ResponseEntity<byte[]> getFile(@PathVariable String id) {
-        File file = dataBaseService.getFile(id);
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
-                .body(file.getData());
-    }*/
-
-
+    
 
 }

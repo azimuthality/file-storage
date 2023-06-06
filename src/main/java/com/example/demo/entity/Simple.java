@@ -1,12 +1,13 @@
 package com.example.demo.entity;
 
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name= "simple")
-
+@NoArgsConstructor
 public class Simple {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -20,10 +21,6 @@ public class Simple {
 
     @Lob
     private byte[] data;
-
-    public Simple() {
-
-    }
 
     public Simple(String name, String type) {
 
