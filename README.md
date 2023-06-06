@@ -1,1 +1,1 @@
-# demo spring project
+# Demo project on Spring Framework file storage
